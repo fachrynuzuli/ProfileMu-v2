@@ -5,7 +5,7 @@ import ChatInput from "./ChatInput";
 import SuggestionChips from "./SuggestionChips";
 import { useChat } from "../contexts/ChatContext";
 import { Message, MessageStatus } from "../types/chat";
-import { Check, CheckCheck, Clock, AlertCircle, Loader2 } from "lucide-react";
+import { Check, CheckCheck, Clock, AlertCircle } from "lucide-react";
 
 interface ChatInterfaceProps {
   onAttachFile?: (file: File) => void;
@@ -60,7 +60,7 @@ const ChatInterface = ({
   }, [messages, isTyping]);
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex-1 flex flex-col h-full">
       <div className="flex-1">
         {messages.length > 0 && (
           <ScrollArea className="h-full p-4" ref={scrollAreaRef}>
