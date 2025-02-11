@@ -1,8 +1,9 @@
 import React from "react";
 import Sidebar from "./Sidebar";
-import ChatInterface from "./ChatInterface";
 import { Button } from "./ui/button";
 import { Github, Linkedin, Twitter, Briefcase, Calendar } from "lucide-react";
+import LandingPage from "./LandingPage";
+import ChatInterface from "./ChatInterface";
 
 interface HomeProps {
   onSendMessage?: (message: string) => void;
@@ -19,6 +20,7 @@ const Home = ({
   isLoading = false,
 }: HomeProps) => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = React.useState(false);
+  const [showChat, setShowChat] = React.useState(false);
 
   const connectedApps = [
     { icon: <Github className="w-4 h-4" />, name: "GitHub", href: "#" },
@@ -28,6 +30,10 @@ const Home = ({
     { icon: <Calendar className="w-4 h-4" />, name: "Calendar", href: "#" },
   ];
 
+  if (!showChat) {
+    return <LandingPage onStartChat={() => setShowChat(true)} />;
+  }
+
   return (
     <div className="flex h-screen bg-background">
       <Sidebar
@@ -36,11 +42,8 @@ const Home = ({
         onItemClick={onNavigate}
       />
       <main className="flex-1 flex flex-col items-center justify-center p-4 relative ml-0 mr-80">
-        {/* Main Chat Area */}
-        <div className="max-w-2xl w-full space-y-6 mx-auto">
-          <h1 className="text-3xl font-semibold text-center">
-            Hey, It's Fachry. Ask me anything!
-          </h1>
+        {/* Main Content Area */}
+        <div className="max-w-3xl w-full mx-auto">
           <ChatInterface onAttachFile={onAttachFile} isLoading={isLoading} />
         </div>
 

@@ -3,7 +3,8 @@ import { ScrollArea } from "./ui/scroll-area";
 import { Card } from "./ui/card";
 import ChatInput from "./ChatInput";
 import SuggestionChips from "./SuggestionChips";
-import { useChat, Message, MessageStatus } from "../contexts/ChatContext";
+import { useChat } from "../contexts/ChatContext";
+import { Message, MessageStatus } from "../types/chat";
 import { Check, CheckCheck, Clock, AlertCircle, Loader2 } from "lucide-react";
 
 interface ChatInterfaceProps {
@@ -59,48 +60,50 @@ const ChatInterface = ({
   }, [messages, isTyping]);
 
   return (
-    <div className="flex flex-col h-full bg-background border rounded-lg overflow-hidden mx-auto">
-      <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
-        <div className="space-y-4">
-          {messages.map((message) => (
-            <div
-              key={message.id}
-              className={`flex ${message.sender === "ai" ? "justify-start" : "justify-end"} mb-4`}
-            >
-              <Card
-                className={`max-w-[70%] p-4 ${message.sender === "ai" ? "bg-secondary" : "bg-primary text-primary-foreground"}`}
-              >
-                <p className="text-sm">{message.content}</p>
-                <div className="flex items-center justify-between mt-2 gap-2">
-                  <span className="text-xs opacity-70">
-                    {message.timestamp.toLocaleTimeString()}
-                  </span>
-                  {message.sender === "user" && (
-                    <MessageStatusIndicator status={message.status} />
-                  )}
+    <div className="flex flex-col h-full">
+      <div className="flex-1">
+        {messages.length > 0 && (
+          <ScrollArea className="h-full p-4" ref={scrollAreaRef}>
+            <div className="space-y-4">
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex ${message.sender === "ai" ? "justify-start" : "justify-end"} mb-4`}
+                >
+                  <Card
+                    className={`max-w-[70%] p-4 ${message.sender === "ai" ? "bg-secondary" : "bg-primary text-primary-foreground"}`}
+                  >
+                    <p className="text-sm">{message.content}</p>
+                    <div className="flex items-center justify-between mt-2 gap-2">
+                      <span className="text-xs opacity-70">
+                        {message.timestamp.toLocaleTimeString()}
+                      </span>
+                      {message.sender === "user" && (
+                        <MessageStatusIndicator status={message.status} />
+                      )}
+                    </div>
+                  </Card>
                 </div>
-              </Card>
+              ))}
+              {isTyping && (
+                <div className="flex justify-start mb-4">
+                  <TypingIndicator />
+                </div>
+              )}
             </div>
-          ))}
-          {isTyping && (
-            <div className="flex justify-start mb-4">
-              <TypingIndicator />
-            </div>
-          )}
-        </div>
-      </ScrollArea>
+          </ScrollArea>
+        )}
+      </div>
 
-      <div className="border-t p-4">
-        <div className="space-y-4">
-          <SuggestionChips
-            onChipClick={(suggestion) => handleSendMessage(suggestion.text)}
-          />
-          <ChatInput
-            onSend={handleSendMessage}
-            onAttach={onAttachFile}
-            disabled={isLoading || isTyping}
-          />
-        </div>
+      <div className="space-y-4">
+        <ChatInput
+          onSend={handleSendMessage}
+          onAttach={onAttachFile}
+          disabled={isLoading || isTyping}
+        />
+        <SuggestionChips
+          onChipClick={(suggestion) => handleSendMessage(suggestion.text)}
+        />
       </div>
     </div>
   );

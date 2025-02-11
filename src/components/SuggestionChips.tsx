@@ -63,7 +63,7 @@ const SuggestionChips = ({
   };
 
   return (
-    <div className="w-full bg-white p-4">
+    <div className="w-full">
       <ScrollArea className="w-full">
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <TooltipProvider>
